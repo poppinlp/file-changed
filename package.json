@@ -1,0 +1,36 @@
+{
+  "name": "file-changed",
+  "version": "0.0.1",
+  "description": "A node module to check whether file is changed or not.",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/poppinlp/node-timestamp"
+  },
+  "bugs": {
+    "url": "https://github.com/poppinlp/node-timestamp/issues"
+  },
+  "author": {
+    "name": "PoppinL",
+    "email": "poppinlp@gmail.com",
+    "url": "http://poppinlp.github.io"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "newer",
+    "changed",
+    "timestamp"
+  ],
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "chalk": "^0.5.1"
+  }
+}
