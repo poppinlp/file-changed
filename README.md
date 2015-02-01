@@ -16,6 +16,12 @@ npm install file-changed --save
 
 ### API
 
+#### get(file[, type])
+
+Access to a file last modified information. `type` could be `ts` for timestamp (default) or `md5` for md5 hash.
+
+Return `false` for no such file in collection. Return timestamp or md5 value depends on `type`.
+
 #### addFile(path[, path2 ... pathN])
 
 Add files to collection.
@@ -51,6 +57,7 @@ var fc = require('file-changed');
 fc.addFile('path/to/file');
 fc.update();
 fc.save();
+console.log(fc.get('path/to/file', 'md5'));
 ```
 
 ### Demo
@@ -61,4 +68,5 @@ node test.js
 
 ### History
 
+- Ver 0.0.2 Add `get` API and md5 value
 - Ver 0.0.1 init
