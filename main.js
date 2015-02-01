@@ -19,7 +19,7 @@ var fs = require('fs'),
 function Timestamp () {
     var that = this;
     // save _timestamp.json file path
-    that.dataPath = path.normalize(__dirname + '/_timestamp.json');
+    that._dataPath = path.normalize(__dirname + '/_timestamp.json');
     /* save files list data
      * {
      *   filepath: {
@@ -28,7 +28,7 @@ function Timestamp () {
      *   }
      * }
      */
-    that.data = fs.existsSync(that.dataPath) ? JSON.parse(fs.readFileSync(that.dataPath, encoding)) : {};
+    that._data = fs.existsSync(that._dataPath) ? JSON.parse(fs.readFileSync(that._dataPath, encoding)) : {};
 }
 
 Timestamp.prototype = {
@@ -41,16 +41,16 @@ Timestamp.prototype = {
     'check': function () {
         // if have arguments, do this for them, else do this for all.
         var that = this,
-            list = arguments.length ? arguments : Object.keys(that.data),
+            list = arguments.length ? arguments : Object.keys(that._data),
             len = list.length,
             res = [],
             item;
 
         while (len--) {
             item = list[len];
-            if (!that.data[item]) {
+            if (!that._data[item]) {
                 console.warn(chalk.red('>> There\'s no file in collection named "' + item + '" occurred in check method.'));
-            } else if (that._getTS(item) !== that.data[item].ts) {
+            } else if (that._getTS(item) !== that._data[item].ts) {
                 res.push(item);
             }
         }
@@ -68,8 +68,8 @@ Timestamp.prototype = {
         while (len--) {
             item = list[len];
             if (fs.existsSync(item)) {
-                that.data[item].ts = that._getTS(item);
-                that.data[item].md5 = that._getMD5(item);
+                that._data[item].ts = that._getTS(item);
+                that._data[item].md5 = that._getMD5(item);
             } else {
                 console.warn(chalk.red('>> File not found "' + item + '" occurred in update method.'));
                 res = false;
@@ -86,8 +86,8 @@ Timestamp.prototype = {
         while (len--) {
             item = arguments[len];
             if (fs.existsSync(item)) {
-                if (that.data[item] === undefined) {
-                    that.data[item] = {};
+                if (that._data[item] === undefined) {
+                    that._data[item] = {};
                 }
             } else {
                 console.warn(chalk.red('>> File not found "' + item + '" occurred in addFile method.'));
@@ -104,8 +104,8 @@ Timestamp.prototype = {
 
         while (len--) {
             item = arguments[len];
-            if (that.data[item] !== undefined) {
-                delete that.data[item];
+            if (that._data[item] !== undefined) {
+                delete that._data[item];
             } else {
                 console.warn(chalk.red('>> There\'s no file in collection named "' + item + '" occurred in rmFile method.'));
                 res = false;
@@ -114,16 +114,16 @@ Timestamp.prototype = {
         return res;
     },
     'save': function () {
-        fs.writeFileSync(this.dataPath, JSON.stringify(this.data), encoding);
+        fs.writeFileSync(this._dataPath, JSON.stringify(this._data), encoding);
         return true;
     },
     'get': function (file, type) {
         if (!file) return;
 
         var that = this;
-        if (!that.data[file]) return false;
+        if (!that._data[file]) return false;
 
-        file = that.data[file];
+        file = that._data[file];
         if (type === 'md5') {
             return file.md5;
         } else {
@@ -131,7 +131,7 @@ Timestamp.prototype = {
         }
     },
     'autoClean': function () {
-        var data = this.data,
+        var data = this._data,
             item;
 
         for (item in data) {
