@@ -39,23 +39,28 @@ Timestamp.prototype = {
         return fs.existsSync(filePath) ? fs.statSync(filePath).mtime.getTime() : false;
     },
     'check': function () {
+        // if have arguments, do this for them, else do this for all.
         var that = this,
-            data = that.data,
+            list = arguments.length ? arguments : Object.keys(that.data),
+            len = list.length,
             res = [],
             item;
 
-        for (item in data) {
-           if (data.hasOwnProperty(item)) {
-               if (that._getTS(item) !== data[item].ts) {
-                   res.push(item);
-               }
-           }
+        while (len--) {
+            item = list[len];
+            if (!that.data[item]) {
+                console.warn(chalk.red('>> There\'s no file in collection named "' + item + '" occurred in check method.'));
+            } else if (that._getTS(item) !== that.data[item].ts) {
+                res.push(item);
+            }
         }
+
         return res;
     },
     'update': function () {
+        // if have arguments, do this for them, else do this for all.
         var that = this,
-            list = that.check(),
+            list = arguments.length ? arguments : that.check(),
             len = list.length,
             item,
             res = true;

@@ -34,9 +34,9 @@ Remove files from collection.
 
 Return `true` for remove successfully. Return `false` for no such file in collection.
 
-#### check()
+#### check([path1 ... pathN])
 
-Check files in collection have changed or not.
+Check files in collection have changed or not. If provide arguments, this will check files in arguments only.
 
 Return a list of changed file as a array.
 
@@ -46,9 +46,9 @@ Auto clean for file in collection that file not found.
 
 Return `true`.
 
-#### update()
+#### update([path1 ... pathN])
 
-Update files last change timestamp in collections.
+Update files last change timestamp in collections. If provide arguments, this will update files in arguments only.
 
 Return `true` for update successfully. Return `false` for file not found by path.
 
@@ -74,6 +74,7 @@ node test.js
 
 ### History
 
+- Ver 0.0.4 Add feature for `check` and `update`
 - Ver 0.0.3 Bugfix and Add `autoClean` API
 - Ver 0.0.2 Add `get` API and md5 value
 - Ver 0.0.1 init
