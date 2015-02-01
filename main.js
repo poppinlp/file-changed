@@ -62,8 +62,7 @@ Timestamp.prototype = {
         var that = this,
             list = arguments.length ? arguments : that.check(),
             len = list.length,
-            item,
-            res = true;
+            item;
 
         while (len--) {
             item = list[len];
@@ -72,15 +71,14 @@ Timestamp.prototype = {
                 that._data[item].md5 = that._getMD5(item);
             } else {
                 console.warn(chalk.red('>> File not found "' + item + '" occurred in update method.'));
-                res = false;
             }
         }
-        return res;
+
+        return that;
     },
     'addFile': function () {
         var that = this,
             len = arguments.length,
-            res = true,
             item;
 
         while (len--) {
@@ -91,15 +89,14 @@ Timestamp.prototype = {
                 }
             } else {
                 console.warn(chalk.red('>> File not found "' + item + '" occurred in addFile method.'));
-                res = false;
             }
         }
-        return res;
+
+        return that;
     },
     'rmFile': function () {
         var that = this,
             len = arguments.length,
-            res = true,
             item;
 
         while (len--) {
@@ -108,14 +105,15 @@ Timestamp.prototype = {
                 delete that._data[item];
             } else {
                 console.warn(chalk.red('>> There\'s no file in collection named "' + item + '" occurred in rmFile method.'));
-                res = false;
             }
         }
-        return res;
+
+        return that;
     },
     'save': function () {
-        fs.writeFileSync(this._dataPath, JSON.stringify(this._data), encoding);
-        return true;
+        var that = this;
+        fs.writeFileSync(that._dataPath, JSON.stringify(that._data), encoding);
+        return that;
     },
     'get': function (file, type) {
         if (!file) return;
@@ -139,7 +137,7 @@ Timestamp.prototype = {
                 delete data[item];
             }
         }
-        return true;
+        return this;
     }
 };
 

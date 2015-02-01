@@ -26,13 +26,13 @@ Return `false` for no such file in collection. Return timestamp or md5 value dep
 
 Add files to collection.
 
-Return `true` for add successfully. Return `false` for repeat file or file not found by path.
+Return `this` for chain operation.
 
 #### rmFile(path[, path2 ... pathN])
 
 Remove files from collection.
 
-Return `true` for remove successfully. Return `false` for no such file in collection.
+Return `this` for chain operation.
 
 #### check([path1 ... pathN])
 
@@ -44,25 +44,25 @@ Return a list of changed file as a array.
 
 Auto clean for file in collection that file not found.
 
-Return `true`.
+Return `this` for chain operation.
 
 #### update([path1 ... pathN])
 
 Update files last change timestamp in collections. If provide arguments, this will update files in arguments only.
 
-Return `true` for update successfully. Return `false` for file not found by path.
+Return `this` for chain operation.
 
 #### save()
 
 Save collection information.
 
+Return `this` for chain operation.
+
 ### Usage Examples
 
 ```js
 var fc = require('file-changed');
-fc.addFile('path/to/file');
-fc.update();
-fc.save();
+fc.addFile('path/to/file').update().save();
 console.log(fc.get('path/to/file', 'md5'));
 ```
 
@@ -74,6 +74,7 @@ node test.js
 
 ### History
 
+- Ver 0.0.5 Some methods support chain operation
 - Ver 0.0.4 Add feature for `check` and `update`
 - Ver 0.0.3 Bugfix and Add `autoClean` API
 - Ver 0.0.2 Add `get` API and md5 value
