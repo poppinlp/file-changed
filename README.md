@@ -38,7 +38,13 @@ Return `true` for remove successfully. Return `false` for no such file in collec
 
 Check files in collection have changed or not.
 
-Return a list for changed file as a array.
+Return a list of changed file as a array.
+
+#### autoClean()
+
+Auto clean for file in collection that file not found.
+
+Return `true`.
 
 #### update()
 
@@ -68,5 +74,6 @@ node test.js
 
 ### History
 
+- Ver 0.0.3 Bugfix and Add `autoClean` API
 - Ver 0.0.2 Add `get` API and md5 value
 - Ver 0.0.1 init

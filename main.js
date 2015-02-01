@@ -19,7 +19,7 @@ var fs = require('fs'),
 function Timestamp () {
     var that = this;
     // save _timestamp.json file path
-    that.dataPath = path.normalize('./_timestamp.json');
+    that.dataPath = path.normalize(__dirname + '/_timestamp.json');
     /* save files list data
      * {
      *   filepath: {
@@ -124,6 +124,17 @@ Timestamp.prototype = {
         } else {
             return file.ts;
         }
+    },
+    'autoClean': function () {
+        var data = this.data,
+            item;
+
+        for (item in data) {
+            if (data.hasOwnProperty(item) && !fs.existsSync(item)) {
+                delete data[item];
+            }
+        }
+        return true;
     }
 };
 

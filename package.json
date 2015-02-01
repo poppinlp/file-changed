@@ -1,6 +1,6 @@
 {
   "name": "file-changed",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A node module to check whether file is changed or not.",
   "main": "main.js",
   "repository": {
