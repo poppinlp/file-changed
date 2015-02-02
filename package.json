@@ -22,10 +22,11 @@
   },
   "keywords": [
     "node",
-    "nodejs",
+    "file",
     "newer",
     "changed",
-    "timestamp"
+    "timestamp",
+    "md5"
   ],
   "scripts": {
     "test": "node test.js"
