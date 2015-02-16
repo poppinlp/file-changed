@@ -74,6 +74,7 @@ node test.js
 
 ### History
 
+- Ver 0.0.6 Bugfix
 - Ver 0.0.5 Some methods support chain operation
 - Ver 0.0.4 Add feature for `check` and `update`
 - Ver 0.0.3 Bugfix and Add `autoClean` API

@@ -1,4 +1,4 @@
-var fc = require('./main.js');
+var fc = require('./lib/main.js');
 
 fc.addFile('test/file1', 'test/file2').addFile('test/file3');
 
