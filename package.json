@@ -1,14 +1,14 @@
 {
   "name": "file-changed",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A node module to check whether file is changed or not.",
   "main": "lib/main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/poppinlp/node-timestamp"
+    "url": "https://github.com/poppinlp/file-changed"
   },
   "bugs": {
-    "url": "https://github.com/poppinlp/node-timestamp/issues"
+    "url": "https://github.com/poppinlp/file-changed/issues"
   },
   "author": {
     "name": "PoppinL",
