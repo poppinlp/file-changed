@@ -74,6 +74,7 @@ node test.js
 
 ### History
 
+- Ver 0.0.7 Fix repository link in `package.json`
 - Ver 0.0.6 Bugfix
 - Ver 0.0.5 Some methods support chain operation
 - Ver 0.0.4 Add feature for `check` and `update`
