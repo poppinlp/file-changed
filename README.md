@@ -34,6 +34,12 @@ Remove files from collection.
 
 Return `this` for chain operation.
 
+#### list()
+
+Get all files in collection.
+
+Return file paths as a array.
+
 #### check([path1 ... pathN])
 
 Check files in collection have changed or not. If provide arguments, this will check files in arguments only.
@@ -42,7 +48,7 @@ Return a list of changed file as a array.
 
 #### autoClean()
 
-Auto clean for file in collection that file not found.
+Auto clean for files in collection which not found.
 
 Return `this` for chain operation.
 
@@ -69,11 +75,12 @@ console.log(fc.get('path/to/file', 'md5'));
 ### Demo
 
 ```shell
-node test.js
+node demo.js
 ```
 
 ### History
 
+- Ver 0.1.0 Add `list` API; Add test case;
 - Ver 0.0.7 Fix repository link in `package.json`
 - Ver 0.0.6 Bugfix
 - Ver 0.0.5 Some methods support chain operation

@@ -1,6 +1,6 @@
 {
   "name": "file-changed",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "A node module to check whether file is changed or not.",
   "main": "lib/main.js",
   "repository": {
@@ -32,6 +32,10 @@
     "test": "node test.js"
   },
   "dependencies": {
-    "chalk": "^0.5.1"
+    "chalk": "latest"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.1",
+    "sync-exec": "^0.5.0"
   }
 }

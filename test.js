@@ -1,17 +1,24 @@
-var fc = require('./lib/main.js');
+var path = require('path'),
+    chalk = require('chalk'),
+    fs = require('fs'),
+    exec = require('sync-exec'),
+    mochaBin = path.join(__dirname, 'node_modules/.bin/mocha'),
+    jsonPath = path.join(__dirname, '_timestamp.json');
 
-fc.addFile('test/file1', 'test/file2').addFile('test/file3');
+clearTest();
+runTest('test');
+clearTest();
 
-fc.rmFile('test/file1').rmFile('test/file3');
+function runTest(testFile) {
+    var result = exec(mochaBin + ' ' + path.join(__dirname, 'test', testFile + '.js'));
 
-fc.addFile('test/file1');
-console.log(fc.check('test/file1'));
-console.log(fc.check('test/file3'));
-console.log(fc.check());
+    if (result.status === 0) {
+        console.log(chalk.green(result.stdout));
+    } else {
+        console.warn(chalk.red(result.stdout));
+    }
+}
 
-fc.update('test/file1').update('test/file3').update();
-
-console.log(fc.get('test/file1'));
-console.log(fc.get('test/file1', 'md5'));
-
-fc.save();
+function clearTest() {
+    fs.existsSync(jsonPath) && fs.unlinkSync(jsonPath);
+}
