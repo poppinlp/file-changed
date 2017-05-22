@@ -109,23 +109,23 @@ describe('file-changed initializer', function() {
             assert.strictEqual(fs.existsSync('_timestamp.json'), true, 'json file should exist');
         });
     });
-    describe('#new with dbPath argument', function() {
+    describe('#new with changeDbPath argument', function() {
         before(function() {
             fs.mkdirSync('tmp');
         });
         after(function() {
             rimraf.sync('tmp');
         });
-        var dbPath = require('path').join('tmp', 'myFcDatabase.json');
+        var changeDbPath = require('path').join('tmp', 'myFcDatabase.json');
         it('Save collection to custom db file', function() {
-            assert.strictEqual(fs.existsSync(dbPath), false, 'json file should not exist');
-            var fcObj = new Fc(dbPath);
+            assert.strictEqual(fs.existsSync(changeDbPath), false, 'json file should not exist');
+            var fcObj = new Fc(changeDbPath);
             fcObj.save();
-            assert.strictEqual(fs.existsSync(dbPath), true, 'json file should exist');
+            assert.strictEqual(fs.existsSync(changeDbPath), true, 'json file should exist');
         });
-        it('Throw error if dbPath is empty or it is not a string', function() {
-            var test = function() { var fcObj = new Fc([dbPath]); };
-            assert.throws(test, 'pathDb argument must be a valid string.', 'function should throw');
+        it('Throw error if changeDbPath is empty or it is not a string', function() {
+            var test = function() { var fcObj = new Fc([changeDbPath]); };
+            assert.throws(test, 'changechangeDbPath argument must be a valid string.', 'function should throw');
         });
     });
 });
