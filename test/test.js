@@ -1,7 +1,10 @@
 var assert = require('assert'),
     fs = require('fs'),
     crypto = require('crypto'),
-    fc = require(require('path').normalize('../lib/main.js'));
+    Fc = require(require('path').normalize('../lib/main.js')),
+    rimraf = require('rimraf');
+
+var fc = new Fc();
 
 describe('file-changed API', function() {
     describe('#addFile', function() {
@@ -90,6 +93,39 @@ describe('file-changed API', function() {
             assert.strictEqual(fs.existsSync('_timestamp.json'), false, 'json file should not exist');
             fc.save();
             assert.strictEqual(fs.existsSync('_timestamp.json'), true, 'json file should exist');
+        });
+    });
+});
+
+describe('file-changed initializer', function() {
+    describe('#new without argument', function() {
+        before(function() {
+            rimraf.sync('_timestamp.json');
+        });
+        it('Save collection to default db file', function() {
+            assert.strictEqual(fs.existsSync('_timestamp.json'), false, 'json file should not exist');
+            var fcObj = new Fc();
+            fcObj.save();
+            assert.strictEqual(fs.existsSync('_timestamp.json'), true, 'json file should exist');
+        });
+    });
+    describe('#new with changeDbPath argument', function() {
+        before(function() {
+            fs.mkdirSync('tmp');
+        });
+        after(function() {
+            rimraf.sync('tmp');
+        });
+        var changeDbPath = require('path').join('tmp', 'myFcDatabase.json');
+        it('Save collection to custom db file', function() {
+            assert.strictEqual(fs.existsSync(changeDbPath), false, 'json file should not exist');
+            var fcObj = new Fc(changeDbPath);
+            fcObj.save();
+            assert.strictEqual(fs.existsSync(changeDbPath), true, 'json file should exist');
+        });
+        it('Throw error if changeDbPath is empty or it is not a string', function() {
+            var test = function() { var fcObj = new Fc([changeDbPath]); };
+            assert.throws(test, 'changechangeDbPath argument must be a valid string.', 'function should throw');
         });
     });
 });
