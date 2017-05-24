@@ -1,0 +1,15 @@
+root: true
+parserOptions:
+  ecmaVersion: 6
+  sourceType": module
+parser: esprima
+extends: eslint:recommended
+env:
+  node: true
+  es6: true
+rules:
+  no-console:
+    - error
+    -
+      allow:
+        - warn

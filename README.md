@@ -1,90 +1,177 @@
 # file-changed
 
-[![Build Status](https://travis-ci.org/poppinlp/file-changed.png?branch=master)](https://travis-ci.org/poppinlp/file-changed)
-[![Dependency Status](https://david-dm.org/poppinlp/file-changed.svg)](https://david-dm.org/poppinlp/file-changed)
-[![devDependency Status](https://david-dm.org/poppinlp/file-changed/dev-status.svg)](https://david-dm.org/poppinlp/file-changed#info=devDependencies)
+[![Build Status][ci-img]][ci-url]
+[![Code Coverage][cov-img]][cov-url]
+[![Dependency Status][dep-img]][dep-url]
+[![Dev Dependency Status][dev-dep-img]][dev-dep-url]
+[![NPM version][npm-ver-img]][npm-url]
+[![NPM downloads][npm-dl-img]][npm-url]
+[![NPM license][npm-lc-img]][npm-url]
 
-Node module to check file changed in collection.
+A node module to check and store file changed.
 
-### Getting Started
+## Getting Started
 
 Install with this command:
 
 ```shell
-npm install file-changed --save
+npm i file-changed --save
 ```
 
-### API
+or maybe you like yarn:
 
-#### get(file[, type])
+```shell
+yarn add file-changed
+```
 
-Access to a file last modified information. `type` could be `ts` for timestamp (default) or `md5` for md5 hash.
+## Class
 
-Return `false` for no such file in collection. Return timestamp or md5 value depends on `type`.
+This package export a class since version 1.0.0 which means you could have multiple instances ans save the information where you like.
 
-#### addFile(path[, path2 ... pathN])
+### constructor([dbPath])
+
+Params:
+
+- dbPath {String}: path to save collection information on disk, default is `./_timestamp.json`
+
+Return:
+
+- collection instance {Object}
+
+## Instance Methods
+
+### get(file[, type])
+
+Access to a file last modified information.
+
+Params:
+
+- file {String}: the target file path
+- type {String}: the information type
+  - `ts`: timestamp (default)
+  - `md5`: md5 hash
+
+Return:
+
+- `false` {Boolean}: no such file in collection
+- timestamp or md5 {String}: depends on `type`
+
+### list()
+
+Get all file paths in collection.
+
+Return:
+
+- file paths {Array}
+
+### addFile(path[, path2 ... pathN])
 
 Add files to collection.
 
-Return `this` for chain operation.
+Params:
 
-#### rmFile(path[, path2 ... pathN])
+- path {String}: the target file path
+
+Return:
+
+- `this` {Object}: for chain operation
+
+### rmFile(path[, path2 ... pathN])
 
 Remove files from collection.
 
-Return `this` for chain operation.
+Params:
 
-#### list()
+- path {String}: the target file path
 
-Get all files in collection.
+Return:
 
-Return file paths as a array.
+- `this` {Object}: for chain operation
 
-#### check([path1 ... pathN])
+### check([path1 ... pathN])
 
-Check files in collection have changed or not. If provide arguments, this will check files in arguments only.
+Check collection files changed or not.
 
-Return a list of changed file as a array.
+Arguments:
 
-#### autoClean()
+- no arguments: check all files
+- path {String}: check these files only
 
-Auto clean for files in collection which not found.
+Return:
 
-Return `this` for chain operation.
+- changed files {Array}
 
-#### update([path1 ... pathN])
+### update([path1 ... pathN])
 
-Update files last change timestamp in collections. If provide arguments, this will update files in arguments only.
+Update files last modified information.
 
-Return `this` for chain operation.
+Arguments:
 
-#### save()
+- no arguments: update all files
+- path {String}: update these files only
 
-Save collection information.
+Return:
 
-Return `this` for chain operation.
+- `this` {Object}: for chain operation
 
-### Usage Examples
+### clean()
+
+Clean files in collection which could not found.
+
+Return:
+
+- `this` {Object}: for chain operation
+
+### save()
+
+Save collection information onto disk.
+
+Return:
+
+- `this` {Object}: for chain operation
+
+## Usage Examples
 
 ```js
-var fc = require('file-changed');
-fc.addFile('path/to/file').update().save();
-console.log(fc.get('path/to/file', 'md5'));
+const
+	Fc = require('file-changed'),
+	collectionA = new Fc('./path/to/save/info');
+
+console.log(collectionA.addFile('test/files/file1', 'test/files/file2').list());
+
+console.log(collectionA.rmFile('test/files/file1').list());
+
+collectionA.addFile('test/files/file1');
+console.log(collectionA.check('test/files/file1'));
+console.log(collectionA.check());
+
+collectionA.update('test/files/file1').update();
+
+console.log(collectionA.get('test/files/file1'));
+console.log(collectionA.get('test/files/file1', 'md5'));
+
+collectionA.save();
 ```
 
-### Demo
+## Test
 
 ```shell
-node demo.js
+npm test
 ```
 
-### History
+[ci-img]:https://img.shields.io/travis/poppinlp/file-changed.svg?style=flat-square
+[ci-url]:https://travis-ci.org/poppinlp/file-changed
 
-- Ver 0.1.0 Add `list` API; Add test case;
-- Ver 0.0.7 Fix repository link in `package.json`
-- Ver 0.0.6 Bugfix
-- Ver 0.0.5 Some methods support chain operation
-- Ver 0.0.4 Add feature for `check` and `update`
-- Ver 0.0.3 Bugfix and Add `autoClean` API
-- Ver 0.0.2 Add `get` API and md5 value
-- Ver 0.0.1 init
+[cov-img]:https://img.shields.io/codecov/poppinlp/github/codecov/file-changed.svg
+[cov-url]:https://codecov.io/gh/poppinlp/file-changed
+
+[dep-img]:https://img.shields.io/david/poppinlp/file-changed.svg?style=flat-square
+[dep-url]:https://david-dm.org/poppinlp/file-changed
+
+[dev-dep-img]:https://img.shields.io/david/dev/poppinlp/file-changed.svg?style=flat-square
+[dev-dep-url]:https://david-dm.org/poppinlp/file-changed#info=devDependencies
+
+[npm-ver-img]:https://img.shields.io/npm/v/file-changed.svg?style=flat-square
+[npm-dl-img]:https://img.shields.io/npm/dm/file-changed.svg?style=flat-square
+[npm-lc-img]:https://img.shields.io/npm/l/file-changed.svg?style=flat-square
+[npm-url]:https://www.npmjs.com/package/file-changed

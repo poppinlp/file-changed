@@ -1,131 +1,212 @@
-var assert = require('assert'),
-    fs = require('fs'),
-    crypto = require('crypto'),
-    Fc = require(require('path').normalize('../lib/main.js')),
-    rimraf = require('rimraf');
+import assert from 'assert';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
+import test from 'ava';
+import Fc from '../lib/main';
 
-var fc = new Fc();
+const testPath = {
+	file1: path.normalize('./test/files/file1'),
+	file2: path.normalize('./test/files/file2'),
+	file3: path.normalize('./test/files/file3'),
+	notExist: path.normalize('./test/files/notExist'),
+	notExist2: path.normalize('./test/files/notExist2'),
+	defaultDbPath: path.normalize('./_timestamp.json'),
+	customDbPath: path.normalize('./_custom.json')
+};
 
-describe('file-changed API', function() {
-    describe('#addFile', function() {
-        it('Add exist file', function() {
-            assert.strictEqual(fc.addFile('test/files/file1'), fc, 'should return self');
-        });
-        it('Add not exist file', function() {
-            assert.strictEqual(fc.addFile('test/files/notExist'), fc, 'should return self');
-        });
-        it('Add multi files', function () {
-            assert.strictEqual(fc.addFile('test/files/file2', 'test/files/file3'), fc, 'should return self');
-        });
-    });
-    describe('#rmFile', function() {
-        it('Remove not exist file', function() {
-            assert.strictEqual(fc.rmFile('test/files/notExist'), fc, 'should return self');
-        });
-        it('Remove exist file', function() {
-            assert.strictEqual(fc.rmFile('test/files/file1'), fc, 'should return self');
-        });
-        it('Remove multi files', function() {
-            assert.strictEqual(fc.rmFile('test/files/file2', 'test/files/file3'), fc, 'should return self');
-        });
-    });
-    describe('#list', function() {
-        it('List empty collection', function() {
-            assert.strictEqual(fc.list().length, 0, 'should return empty array');
-        });
-        it('List not empty collection', function() {
-            fc.addFile('test/files/file1');
-            assert.strictEqual(fc.list()[0], 'test/files/file1', 'file path not correct');
-            fc.rmFile('test/files/file1');
-        });
-    });
-    describe('#check', function () {
-        it('No changed file', function () {
-            assert.strictEqual(fc.check().length, 0, 'should return empty array');
-        });
-        it('Have changed file', function () {
-            fc.addFile('test/files/file1');
-            assert.strictEqual(fc.check()[0], 'test/files/file1', 'file path not correct');
-        });
-        it('Check with specified files', function () {
-            assert.strictEqual(fc.check('test/files/file2', 'test/files/file1')[0], 'test/files/file1', 'file path not correct');
-        });
-    });
-    describe('#update', function () {
-        it('Update files', function () {
-            assert.strictEqual(fc.update().check().length, 0, 'should return empty array');
-        });
-    });
-    describe('#get', function () {
-        it('Get not exist file', function () {
-            assert.strictEqual(fc.get('test/files/notExist'), false, 'should return false');
-        });
-        it('Get exist file in timestamp', function () {
-            var ts = fc.get('test/files/file1');
-            assert.strictEqual((new Date(ts)).getTime(), ts, 'should return a timestamp');
-        });
-        it('Get exist file in md5', function () {
-            var filePath = 'test/files/file1',
-                md5 = crypto.createHash('md5').update(fs.readFileSync(filePath), 'utf8').digest('hex').slice(0, 16);
-
-            assert.strictEqual(fc.get(filePath, 'md5'), md5, 'should return correct md5');
-        });
-    });
-    describe('#autoClean', function () {
-        it('All files exist', function () {
-            assert.strictEqual(fc.autoClean(), fc, 'should return self');
-        });
-        it('Clean not exist file', function () {
-            var filePath = 'test/files/file3';
-
-            fc.addFile(filePath).update();
-            assert.notStrictEqual(fc.get(filePath), false, 'should not return false when added');
-
-            fs.unlinkSync(filePath);
-            assert.notStrictEqual(fc.get(filePath), false, 'should not return false when removed');
-            assert.strictEqual(fc.autoClean().get(filePath), false, 'should return false');
-
-            fs.writeFileSync(filePath, 'test');
-        });
-    });
-    describe('#save', function () {
-        it('Save collection to file', function () {
-            assert.strictEqual(fs.existsSync('_timestamp.json'), false, 'json file should not exist');
-            fc.save();
-            assert.strictEqual(fs.existsSync('_timestamp.json'), true, 'json file should exist');
-        });
-    });
+test('[constructor] no arguments', t => {
+	t.notThrows(() => {
+		new Fc();
+	}, 'should throw no error');
+});
+test('[constructor] validate arguments', t => {
+	t.notThrows(() => {
+		new Fc(testPath.customDbPath);
+	}, 'should throw no error');
+});
+test('[constructor] not validate arguments', t => {
+	t.throws(() => {
+		new Fc({});
+	}, 'dbPath must be a valid string.', 'should throw error');
 });
 
-describe('file-changed initializer', function() {
-    describe('#new without argument', function() {
-        before(function() {
-            rimraf.sync('_timestamp.json');
-        });
-        it('Save collection to default db file', function() {
-            assert.strictEqual(fs.existsSync('_timestamp.json'), false, 'json file should not exist');
-            var fcObj = new Fc();
-            fcObj.save();
-            assert.strictEqual(fs.existsSync('_timestamp.json'), true, 'json file should exist');
-        });
-    });
-    describe('#new with changeDbPath argument', function() {
-        before(function() {
-            fs.mkdirSync('tmp');
-        });
-        after(function() {
-            rimraf.sync('tmp');
-        });
-        var changeDbPath = require('path').join('tmp', 'myFcDatabase.json');
-        it('Save collection to custom db file', function() {
-            assert.strictEqual(fs.existsSync(changeDbPath), false, 'json file should not exist');
-            var fcObj = new Fc(changeDbPath);
-            fcObj.save();
-            assert.strictEqual(fs.existsSync(changeDbPath), true, 'json file should exist');
-        });
-        it('Throw error if changeDbPath is empty or it is not a string', function() {
-            var test = function() { var fcObj = new Fc([changeDbPath]); };
-            assert.throws(test, 'changechangeDbPath argument must be a valid string.', 'function should throw');
-        });
-    });
+test('[addFile] add exist file', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	t.deepEqual(fc.addFile(testPath.file1), fc, 'should return self');
+	t.deepEqual(fc.addFile(testPath.file2, testPath.file3), fc, 'should return self');
+});
+test('[addFile] add not exist file', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	t.deepEqual(fc.addFile(testPath.notExist), fc, 'should return self');
+	t.deepEqual(fc.addFile(testPath.notExist, testPath.notExist2), fc, 'should return self');
+});
+
+test('[rmFile] remove exist file', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	t.deepEqual(fc.rmFile(testPath.file1), fc, 'should return self');
+	t.deepEqual(fc.rmFile(testPath.file2, testPath.file3), fc, 'should return self');
+});
+test('[rmFile] remove not exist file', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	t.deepEqual(fc.rmFile(testPath.notExist), fc, 'should return self');
+	t.deepEqual(fc.rmFile(testPath.notExist, testPath.notExist2), fc, 'should return self');
+});
+
+test('[list] list empty collection', t => {
+	const fc = new Fc();
+
+	t.plan(1);
+
+	t.is(fc.list().length, 0, 'should return empty array');
+});
+test('[list] list not empty collection', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	fc.addFile(testPath.file1);
+	t.deepEqual(fc.list(), [ testPath.file1 ], 'should return file path within array');
+
+	fc.rmFile(testPath.file1);
+	t.is(fc.list().length, 0, 'should return 0');
+});
+
+test('[check] check empty collection', t => {
+	const fc = new Fc();
+
+	t.plan(1);
+
+	t.is(fc.check().length, 0, 'should return 0');
+});
+test('[check] check not empty collection', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	fc.addFile(testPath.file1);
+	t.deepEqual(fc.check(), [ testPath.file1 ], 'should return file path within array');
+
+	fc.rmFile(testPath.file1);
+	t.is(fc.check().length, 0, 'should return 0');
+});
+test('[check] check with arguments', t => {
+	const fc = new Fc();
+
+	t.plan(4);
+
+	fc.addFile(testPath.file1);
+	t.deepEqual(fc.check(testPath.file1), [ testPath.file1 ], 'should return file path within array');
+	t.deepEqual(fc.check(testPath.file1, testPath.file2), [ testPath.file1 ], 'should return file path within array');
+	t.is(fc.check(testPath.file2, testPath.file3).length, 0, 'should return 0');
+
+	fc.rmFile(testPath.file1);
+	t.is(fc.check(testPath.file1, testPath.file2, testPath.file3).length, 0, 'should return 0');
+});
+
+test('[update] return self', t => {
+	const fc = new Fc();
+
+	t.plan(1);
+
+	t.deepEqual(fc.update(), fc, 'should return self');
+});
+test('[update] update all collection', t => {
+	const fc = new Fc();
+
+	t.plan(1);
+
+	fc.addFile(testPath.file1, testPath.file2, testPath.file3);
+	t.is(fc.update().check().length, 0, 'should return 0');
+});
+test('[update] update with arguments', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	fc.addFile(testPath.file1, testPath.file2, testPath.file3);
+	t.is(fc.update(testPath.file1).check().length, 2, 'should return 2');
+	t.is(fc.update(testPath.file2, testPath.file3).check().length, 0, 'should return 0');
+});
+
+test('[get] get not exist file', t => {
+	const fc = new Fc();
+
+	t.plan(1);
+
+	t.is(fc.get(testPath.notExist), false, 'should return false');
+});
+test('[get] get file timestamp', t => {
+	const
+		fc = new Fc(),
+		ts = fc.addFile(testPath.file1).update().get(testPath.file1);
+
+	t.plan(2);
+
+	t.is(typeof ts, 'number', 'should be a number');
+	t.is((new Date(ts)).getTime(), ts, 'should return a timestamp');
+});
+test('[get] get file md5', t => {
+	const
+		fc = new Fc(),
+		md5 = fc.addFile(testPath.file1).update().get(testPath.file1, 'md5');
+
+	t.plan(2);
+
+	t.is(typeof md5, 'string', 'should be a string');
+	t.is(md5.length, 16, 'should have 16 chars');
+});
+
+test('[clean] return self', t => {
+	const fc = new Fc();
+
+	t.plan(1);
+
+	t.deepEqual(fc.clean(), fc, 'should return self');
+});
+test('[clean] clean collection', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	fs.writeFileSync(testPath.notExist, '');
+
+	fc.addFile(testPath.file1, testPath.notExist);
+	t.is(fc.clean().list().length, 2, 'should return 2');
+
+	fs.unlinkSync(testPath.notExist);
+	t.is(fc.clean().list().length, 1, 'should return 1');
+});
+
+test('[save] save to default path', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+	t.is(fs.existsSync(testPath.defaultDbPath), false, 'should not exist');
+	fc.save();
+	t.is(fs.existsSync(testPath.defaultDbPath), true, 'should exist');
+
+	fs.unlinkSync(testPath.defaultDbPath);
+});
+test('[save] save to custom path', t => {
+	const fc = new Fc(testPath.customDbPath);
+
+	t.plan(2);
+	t.is(fs.existsSync(testPath.customDbPath), false, 'should not exist');
+	fc.save();
+	t.is(fs.existsSync(testPath.customDbPath), true, 'should exist');
+
+	fs.unlinkSync(testPath.customDbPath);
 });
