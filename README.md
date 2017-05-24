@@ -162,7 +162,7 @@ npm test
 [ci-img]:https://img.shields.io/travis/poppinlp/file-changed.svg?style=flat-square
 [ci-url]:https://travis-ci.org/poppinlp/file-changed
 
-[cov-img]:https://img.shields.io/codecov/poppinlp/github/codecov/file-changed.svg
+[cov-img]:https://img.shields.io/codecov/c/github/poppinlp/file-changed.svg?style=flat-square
 [cov-url]:https://codecov.io/gh/poppinlp/file-changed
 
 [dep-img]:https://img.shields.io/david/poppinlp/file-changed.svg?style=flat-square
