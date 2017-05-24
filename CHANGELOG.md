@@ -5,6 +5,7 @@
 	- Reconstruct by es2015 syntax.
 	- Add `eslint` for dev js lint.
 	- Use `ava` as test framework instead of `mocha`.
+	- Only test last stable and last LTS node version for CI.
 - Ver 0.1.0 Add `list` API; Add test case
 - Ver 0.0.7 Fix repository link in `package.json`
 - Ver 0.0.6 Bugfix

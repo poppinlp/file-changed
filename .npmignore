@@ -1,4 +1,6 @@
 _timestamp.json
+.eslintignore
+.eslintrc.yml
 .travis.yml
-test.js
+TODO.md
 test
