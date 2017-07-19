@@ -1,4 +1,6 @@
-- Ver 1.0.0 [BREAK CHANGE]
+- 1.1.0
+	- Support glob for `addFile` and `rmFile`.
+- 1.0.0 [BREAK CHANGE]
 	- This package will export a class now, you should `new` a instance to use it.
 	- The constructor accepts a file path to store change database.
 	- Rename `autoClean` to `clean`.
@@ -6,11 +8,5 @@
 	- Add `eslint` for dev js lint.
 	- Use `ava` as test framework instead of `mocha`.
 	- Only test last stable and last LTS node version for CI.
-- Ver 0.1.0 Add `list` API; Add test case
-- Ver 0.0.7 Fix repository link in `package.json`
-- Ver 0.0.6 Bugfix
-- Ver 0.0.5 Some methods support chain operation
-- Ver 0.0.4 Add feature for `check` and `update`
-- Ver 0.0.3 Bugfix and Add `autoClean` API
-- Ver 0.0.2 Add `get` API and md5 value
-- Ver 0.0.1 init
+- 0.1.0
+	- Init

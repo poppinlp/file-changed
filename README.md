@@ -1,7 +1,6 @@
 # file-changed
 
 [![Build Status][ci-img]][ci-url]
-[![Code Coverage][cov-img]][cov-url]
 [![Dependency Status][dep-img]][dep-url]
 [![Dev Dependency Status][dev-dep-img]][dev-dep-url]
 [![NPM version][npm-ver-img]][npm-url]
@@ -70,7 +69,7 @@ Add files to collection.
 
 Params:
 
-- path {String}: the target file path
+- path {String}: the target file path or glob
 
 Return:
 
@@ -82,7 +81,7 @@ Remove files from collection.
 
 Params:
 
-- path {String}: the target file path
+- path {String}: the target file path or glob
 
 Return:
 
@@ -113,7 +112,6 @@ Arguments:
 Return:
 
 - `this` {Object}: for chain operation
-
 ### clean()
 
 Clean files in collection which could not found.
@@ -133,24 +131,27 @@ Return:
 ## Usage Examples
 
 ```js
-const
-	Fc = require('file-changed'),
-	collectionA = new Fc('./path/to/save/info');
+const Fc = require('file-changed');
+const collectionA = new Fc('./path/to/save/info'); // Create collection instance whill will load modified info from that path if that path exists
 
-console.log(collectionA.addFile('test/files/file1', 'test/files/file2').list());
+collectionA.addFile('test/files/file1', 'test/files/file2'); // Add 2 files in collectionA
 
-console.log(collectionA.rmFile('test/files/file1').list());
+const fileList = collectionA.list(); // Get file list in collectionA
 
-collectionA.addFile('test/files/file1');
-console.log(collectionA.check('test/files/file1'));
-console.log(collectionA.check());
+collectionA.rmFile('test/files/file1'); // Remove 1 file from collectionA
 
-collectionA.update('test/files/file1').update();
+collectionA.addFile('test/files/*'); // Add file by glob
 
-console.log(collectionA.get('test/files/file1'));
-console.log(collectionA.get('test/files/file1', 'md5'));
+const modifiedList1 = collectionA.check('test/files/file1'); // Check 1 file modified or not
+const modifiedList2 = collectionA.check()); // Check all files in collectionA modified or not
 
-collectionA.save();
+collectionA.update('test/files/file1'); // Update last modified info for 1 file
+collectionA.update(); // Update last modified info for all files in collectionA
+
+const lastModifiedTS = collectionA.get('test/files/file1'); // Get last modified timestamp for that file
+const lastModifiedMD5 = collectionA.get('test/files/file1', 'md5'); // Get last modified md5 for that file
+
+collectionA.save(); // Save collectionA modified info to disk
 ```
 
 ## Test

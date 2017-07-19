@@ -1,7 +1,5 @@
-import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
-import crypto from 'crypto';
 import test from 'ava';
 import Fc from '../lib/main';
 
@@ -12,57 +10,107 @@ const testPath = {
 	notExist: path.normalize('./test/files/notExist'),
 	notExist2: path.normalize('./test/files/notExist2'),
 	defaultDbPath: path.normalize('./_timestamp.json'),
-	customDbPath: path.normalize('./_custom.json')
+	customDbPath: path.normalize('./_custom.json'),
+	glob: path.normalize('./test/files/*'),
+	globEmpty: path.normalize('./test/files/notExist*')
 };
 
 test('[constructor] no arguments', t => {
 	t.notThrows(() => {
-		new Fc();
+		const noop = new Fc();
+
+		noop.list(); // To pass eslint
 	}, 'should throw no error');
 });
 test('[constructor] validate arguments', t => {
 	t.notThrows(() => {
-		new Fc(testPath.customDbPath);
+		const noop = new Fc(testPath.customDbPath);
+
+		noop.list(); // To pass eslint
 	}, 'should throw no error');
 });
 test('[constructor] not validate arguments', t => {
 	t.throws(() => {
-		new Fc({});
+		const noop = new Fc({});
+
+		noop.list(); // To pass eslint
 	}, 'dbPath must be a valid string.', 'should throw error');
 });
 
 test('[addFile] add exist file', t => {
 	const fc = new Fc();
 
-	t.plan(2);
+	t.plan(3);
 
 	t.deepEqual(fc.addFile(testPath.file1), fc, 'should return self');
 	t.deepEqual(fc.addFile(testPath.file2, testPath.file3), fc, 'should return self');
+	t.is(fc.list().length, 3, 'should have 3 items');
 });
 test('[addFile] add not exist file', t => {
 	const fc = new Fc();
 
-	t.plan(2);
+	t.plan(3);
 
 	t.deepEqual(fc.addFile(testPath.notExist), fc, 'should return self');
 	t.deepEqual(fc.addFile(testPath.notExist, testPath.notExist2), fc, 'should return self');
+	t.is(fc.list().length, 0, 'should have 0 item');
+});
+test('[addFile] add glob', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	t.deepEqual(fc.addFile(testPath.glob), fc, 'should return self');
+	t.is(fc.list().length, 3, 'should have 3 items');
+});
+test('[addFile] add empty glob', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	t.deepEqual(fc.addFile(testPath.globEmpty), fc, 'should return self');
+	t.is(fc.list().length, 0, 'should have 0 item');
 });
 
 test('[rmFile] remove exist file', t => {
 	const fc = new Fc();
 
-	t.plan(2);
+	t.plan(4);
 
+	fc.addFile(testPath.glob);
 	t.deepEqual(fc.rmFile(testPath.file1), fc, 'should return self');
+	t.is(fc.list().length, 2, 'should have 2 items');
 	t.deepEqual(fc.rmFile(testPath.file2, testPath.file3), fc, 'should return self');
+	t.is(fc.list().length, 0, 'should have 0 item');
 });
 test('[rmFile] remove not exist file', t => {
 	const fc = new Fc();
 
+	t.plan(4);
+
+	fc.addFile(testPath.glob);
+	t.deepEqual(fc.rmFile(testPath.notExist), fc, 'should return self');
+	t.is(fc.list().length, 3, 'should have 3 items');
+	t.deepEqual(fc.rmFile(testPath.notExist, testPath.notExist2), fc, 'should return self');
+	t.is(fc.list().length, 3, 'should have 3 items');
+});
+test('[rmFile] remove glob', t => {
+	const fc = new Fc();
+
 	t.plan(2);
 
-	t.deepEqual(fc.rmFile(testPath.notExist), fc, 'should return self');
-	t.deepEqual(fc.rmFile(testPath.notExist, testPath.notExist2), fc, 'should return self');
+	fc.addFile(testPath.glob);
+	t.deepEqual(fc.rmFile(testPath.glob), fc, 'should return self');
+	t.is(fc.list().length, 0, 'should have 0 item');
+});
+test('[rmFile] remove empty glob', t => {
+	const fc = new Fc();
+
+	t.plan(2);
+
+	fc.addFile(testPath.glob);
+	t.deepEqual(fc.rmFile(testPath.globEmpty), fc, 'should return self');
+	t.is(fc.list().length, 3, 'should have 3 items');
 });
 
 test('[list] list empty collection', t => {
@@ -78,7 +126,7 @@ test('[list] list not empty collection', t => {
 	t.plan(2);
 
 	fc.addFile(testPath.file1);
-	t.deepEqual(fc.list(), [ testPath.file1 ], 'should return file path within array');
+	t.deepEqual(fc.list(), [testPath.file1], 'should return file path within array');
 
 	fc.rmFile(testPath.file1);
 	t.is(fc.list().length, 0, 'should return 0');
@@ -97,7 +145,7 @@ test('[check] check not empty collection', t => {
 	t.plan(2);
 
 	fc.addFile(testPath.file1);
-	t.deepEqual(fc.check(), [ testPath.file1 ], 'should return file path within array');
+	t.deepEqual(fc.check(), [testPath.file1], 'should return file path within array');
 
 	fc.rmFile(testPath.file1);
 	t.is(fc.check().length, 0, 'should return 0');
@@ -108,8 +156,8 @@ test('[check] check with arguments', t => {
 	t.plan(4);
 
 	fc.addFile(testPath.file1);
-	t.deepEqual(fc.check(testPath.file1), [ testPath.file1 ], 'should return file path within array');
-	t.deepEqual(fc.check(testPath.file1, testPath.file2), [ testPath.file1 ], 'should return file path within array');
+	t.deepEqual(fc.check(testPath.file1), [testPath.file1], 'should return file path within array');
+	t.deepEqual(fc.check(testPath.file1, testPath.file2), [testPath.file1], 'should return file path within array');
 	t.is(fc.check(testPath.file2, testPath.file3).length, 0, 'should return 0');
 
 	fc.rmFile(testPath.file1);
