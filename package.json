@@ -1,6 +1,6 @@
 {
   "name": "file-changed",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A node module to check and store file changed.",
   "main": "lib/main.js",
   "repository": {
@@ -26,7 +26,10 @@
     "md5"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/ava test/test.js --verbose --color --tap --fail-fast | ./node_modules/.bin/tap-diff"
+    "ut": "./node_modules/.bin/ava test/test.js --verbose --color --tap --fail-fast | ./node_modules/.bin/tap-diff",
+    "eslint": "./node_modules/.bin/eslint -c .eslintrc.yml .",
+    "test": "npm run eslint && npm run ut",
+    "cov": "./node_modules/.bin/nyc npm test && ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
   "dependencies": {
     "chalk": "2.0.1",
@@ -35,8 +38,10 @@
   "devDependencies": {
     "ava": "0.21.0",
     "codecov": "2.2.0",
-    "eslint": "4.2.0",
-    "eslint-config-handsome": "0.2.2",
+    "coveralls": "2.13.1",
+    "eslint": "4.3.0",
+    "eslint-config-handsome": "0.2.3",
+    "nyc": "11.0.3",
     "tap-diff": "0.1.1"
   }
 }
