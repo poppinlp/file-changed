@@ -4,3 +4,4 @@ _timestamp.json
 .travis.yml
 TODO.md
 test
+npm-shrinkwrap.json

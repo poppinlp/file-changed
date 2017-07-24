@@ -29,7 +29,8 @@
     "ut": "./node_modules/.bin/ava test/test.js --verbose --color --tap --fail-fast | ./node_modules/.bin/tap-diff",
     "eslint": "./node_modules/.bin/eslint -c .eslintrc.yml .",
     "test": "npm run eslint && npm run ut",
-    "cov": "./node_modules/.bin/nyc npm test && ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
+    "cov-report": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls",
+    "cov": "./node_modules/.bin/nyc npm test"
   },
   "dependencies": {
     "chalk": "2.0.1",

@@ -1,3 +1,5 @@
+- 1.1.2
+	- Remove shrinkwrap file in publish package
 - 1.1.0
 	- Support glob for `addFile` and `rmFile`.
 - 1.0.0 [BREAK CHANGE]

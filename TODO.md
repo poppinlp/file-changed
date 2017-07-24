@@ -1,1 +1,2 @@
+- do `check` and `update` auto for `get`
 - add `quiet` option to disable warn output
