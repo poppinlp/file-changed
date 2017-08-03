@@ -1,5 +1,8 @@
+- 1.2.0
+	- Support glob for `check` and `update`.
+	- Reconstruct test case.
 - 1.1.2
-	- Remove shrinkwrap file in publish package
+	- Remove shrinkwrap file in publish package.
 - 1.1.0
 	- Support glob for `addFile` and `rmFile`.
 - 1.0.0 [BREAK CHANGE]
@@ -11,4 +14,4 @@
 	- Use `ava` as test framework instead of `mocha`.
 	- Only test last stable and last LTS node version for CI.
 - 0.1.0
-	- Init
+	- Init.

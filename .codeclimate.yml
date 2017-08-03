@@ -1,9 +1,0 @@
-engines:
-  markdownlint:
-    enabled: true
-  eslint:
-    enabled: false
-ratings:
-   paths:
-    - "**.js"
-    - "**.md"

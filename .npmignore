@@ -1,7 +1,4 @@
-_timestamp.json
-.eslintignore
 .eslintrc.yml
 .travis.yml
 TODO.md
-test
 npm-shrinkwrap.json

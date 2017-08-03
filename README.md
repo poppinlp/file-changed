@@ -2,7 +2,6 @@
 
 [![Build Status][ci-img]][ci-url]
 [![Code coverage][cov-img]][cov-url]
-[![Code GPA][gpa-img]][gpa-url]
 [![Code style][lint-img]][lint-url]
 [![Dependency Status][dep-img]][dep-url]
 [![Dev Dependency Status][dev-dep-img]][dev-dep-url]
@@ -96,8 +95,8 @@ Check collection files changed or not.
 
 Arguments:
 
-- no arguments: check all files
-- path {String}: check these files only
+- no arguments: check all files.
+- path {String}: the target file path or glob
 
 Return:
 
@@ -110,11 +109,12 @@ Update files last modified information.
 Arguments:
 
 - no arguments: update all files
-- path {String}: update these files only
+- path {String}: the target file path or glob
 
 Return:
 
 - `this` {Object}: for chain operation
+
 ### clean()
 
 Clean files in collection which could not found.
@@ -168,9 +168,6 @@ npm test
 
 [cov-img]:https://img.shields.io/coveralls/poppinlp/file-changed.svg?style=flat-square
 [cov-url]:https://coveralls.io/github/poppinlp/file-changed?branch=master
-
-[gpa-img]:https://img.shields.io/codeclimate/github/poppinlp/file-changed.svg?style=flat-square
-[gpa-url]:https://codeclimate.com/github/poppinlp/file-changed
 
 [lint-img]:https://img.shields.io/badge/code%20style-handsome-brightgreen.svg?style=flat-square
 [lint-url]:https://github.com/poppinlp/eslint-config-handsome
