@@ -36,7 +36,14 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 		t.plan(2);
 
 		fc.addFile(TEST_PATH.glob);
-		t.deepEqual(fc.rmFile(TEST_PATH.globEmpty), fc, 'should return self');
+		t.deepEqual(fc.rmFile(TEST_PATH.emptyGlob), fc, 'should return self');
 		t.is(fc.list().length, 3, 'should have 3 items');
+	});
+	test('[rmFile] remove invalid glob', t => {
+		const fc = new Fc();
+
+		t.notThrows(() => {
+			fc.rmFile(TEST_PATH.invalidGlob);
+		}, 'should throw error');
 	});
 };

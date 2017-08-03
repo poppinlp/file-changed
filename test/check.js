@@ -44,6 +44,13 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 		t.plan(1);
 
 		fc.addFile(TEST_PATH.glob);
-		t.deepEqual(fc.check(TEST_PATH.globEmpty), [], 'should return empty array');
+		t.deepEqual(fc.check(TEST_PATH.emptyGlob), [], 'should return empty array');
+	});
+	test('[check] check invalid glob', t => {
+		const fc = new Fc();
+
+		t.notThrows(() => {
+			fc.check(TEST_PATH.invalidGlob);
+		}, 'should throw error');
 	});
 };

@@ -18,22 +18,24 @@ const TEST_PATH = {
 	file3: path.normalize('./test/files/file3'),
 	notExist: path.normalize('./test/files/notExist'),
 	notExist2: path.normalize('./test/files/notExist2'),
-	defaultDbPath: path.normalize('./_timestamp.json'),
-	customDbPath: path.normalize('./_custom.json'),
 	glob: path.normalize('./test/files/*'),
-	globEmpty: path.normalize('./test/files/notExist*')
+	globEmpty: path.normalize('./test/files/notExist*'),
+	invalidGlob: '',
+	defaultDbPath: path.normalize('./_timestamp.json'),
+	customDbPath: path.normalize('./test/dbs/_custom.json'),
+	existDbPath: path.normalize('./test/dbs/db.json')
 };
 
 [
+	constructorCase,
 	addFileCase,
 	checkCase,
-	cleanCase,
-	constructorCase,
+	updateCase,
 	getCase,
-	listCase,
 	rmFileCase,
+	listCase,
 	saveCase,
-	updateCase
+	cleanCase
 ].forEach(testCase => {
 	testCase({
 		test,
