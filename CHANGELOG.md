@@ -1,3 +1,6 @@
+- 1.2.1
+	- Update test coverage to 100%.
+	- Update npm publish tar to ignore some files.
 - 1.2.0
 	- Support glob for `check` and `update`.
 	- Reconstruct test case.

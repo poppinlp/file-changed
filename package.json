@@ -1,6 +1,6 @@
 {
   "name": "file-changed",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A node module to check and store file changed.",
   "main": "lib/main.js",
   "repository": {
@@ -13,6 +13,7 @@
   "author": "PoppinL <poppinlp@gmail.com>",
   "license": "MIT",
   "readmeFilename": "README.md",
+  "files": [],
   "engines": {
     "node": ">= 6"
   },
@@ -34,15 +35,15 @@
     "cov-report": "npm run cov && npm run report"
   },
   "dependencies": {
-    "chalk": "2.0.1",
+    "chalk": "2.1.0",
     "glob": "7.1.2"
   },
   "devDependencies": {
-    "ava": "0.21.0",
+    "ava": "0.22.0",
     "coveralls": "2.13.1",
-    "eslint": "4.3.0",
-    "eslint-config-handsome": "0.2.3",
-    "nyc": "11.1.0",
+    "eslint": "4.8.0",
+    "eslint-config-handsome": "0.2.8",
+    "nyc": "11.2.1",
     "tap-diff": "0.1.1"
   }
 }
