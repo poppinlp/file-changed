@@ -8,6 +8,7 @@
 [![NPM version][npm-ver-img]][npm-url]
 [![NPM downloads][npm-dl-img]][npm-url]
 [![NPM license][npm-lc-img]][npm-url]
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpoppinlp%2Ffile-changed.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpoppinlp%2Ffile-changed?ref=badge_shield)
 
 A node module to check and store file changed.
 
@@ -182,3 +183,7 @@ npm test
 [npm-dl-img]:https://img.shields.io/npm/dm/file-changed.svg?style=flat-square
 [npm-lc-img]:https://img.shields.io/npm/l/file-changed.svg?style=flat-square
 [npm-url]:https://www.npmjs.com/package/file-changed
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpoppinlp%2Ffile-changed.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpoppinlp%2Ffile-changed?ref=badge_large)
