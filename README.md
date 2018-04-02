@@ -28,7 +28,7 @@ yarn add file-changed
 
 ## Class
 
-This package export a class since version 1.0.0 which means you could have multiple instances ans save the information where you like.
+This package export a class since version 1.0.0 which means you could have multiple instances and save the information where you like.
 
 ### constructor([dbPath])
 
