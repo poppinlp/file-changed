@@ -7,19 +7,23 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 		t.is(fc.get(TEST_PATH.notExist), false, 'should return false');
 	});
 	test('[get] get file timestamp', t => {
-		const
-			fc = new Fc(),
-			ts = fc.addFile(TEST_PATH.file1).update().get(TEST_PATH.file1);
+		const fc = new Fc(),
+			ts = fc
+				.addFile(TEST_PATH.file1)
+				.update()
+				.get(TEST_PATH.file1);
 
 		t.plan(2);
 
 		t.is(typeof ts, 'number', 'should be a number');
-		t.is((new Date(ts)).getTime(), ts, 'should return a timestamp');
+		t.is(new Date(ts).getTime(), ts, 'should return a timestamp');
 	});
 	test('[get] get file md5', t => {
-		const
-			fc = new Fc(),
-			md5 = fc.addFile(TEST_PATH.file1).update().get(TEST_PATH.file1, 'md5');
+		const fc = new Fc(),
+			md5 = fc
+				.addFile(TEST_PATH.file1)
+				.update()
+				.get(TEST_PATH.file1, 'md5');
 
 		t.plan(2);
 

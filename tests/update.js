@@ -47,7 +47,11 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 		t.plan(1);
 
 		fc.addFile(TEST_PATH.glob);
-		t.deepEqual(fc.update(TEST_PATH.emptyGlob).check(), [TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3], 'should return 3 files path array');
+		t.deepEqual(
+			fc.update(TEST_PATH.emptyGlob).check(),
+			[TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3],
+			'should return 3 files path array'
+		);
 	});
 	test('[update] update invalid glob', t => {
 		const fc = new Fc();

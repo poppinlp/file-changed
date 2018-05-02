@@ -1,22 +1,27 @@
-const
-	fs = require('fs'),
-	path = require('path'),
-	crypto = require('crypto');
-const
-	glob = require('glob'),
-	chalk = require('chalk');
-const
-	DEFAULT_DB_PATH = path.join(__dirname, '../_timestamp.json'),
-	ENCODING = 'utf8';
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const glob = require('glob');
+const chalk = require('chalk');
 
-const getMD5 = filePath => crypto
-	.createHash('md5')
-	.update(fs.readFileSync(filePath, {
-		encoding: ENCODING
-	}), ENCODING)
-	.digest('hex').slice(0, 16);
+const DEFAULT_DB_PATH = path.join(__dirname, '../_timestamp.json');
+const ENCODING = 'utf8';
 
-const getTS = filePath => fs.statSync(filePath).mtime.getTime();
+const warn = msg => console.warn(chalk.red(`>> ${msg}`));
+
+const getFileMD5 = filePath =>
+	crypto
+		.createHash('md5')
+		.update(
+			fs.readFileSync(filePath, {
+				encoding: ENCODING
+			}),
+			ENCODING
+		)
+		.digest('hex')
+		.slice(0, 16);
+
+const getFileTS = filePath => fs.statSync(filePath).mtime.getTime();
 
 const loop = ({ targets, method, job }) => {
 	for (const pattern of targets) {
@@ -24,13 +29,13 @@ const loop = ({ targets, method, job }) => {
 			const files = glob.sync(pattern);
 
 			if (files.length === 0) {
-				console.warn(chalk.red(`>> [${method}] Pattern match no file: ${pattern}`));
+				warn(`[${method}] Pattern match no file: ${pattern}`);
 				continue;
 			}
 
 			files.forEach(job);
 		} catch (err) {
-			console.warn(chalk.red(`>> [${method}] Pattern parse fail for ${pattern}: ${err.message}`));
+			warn(`[${method}] Pattern parse fail for ${pattern}: ${err.message}`);
 		}
 	}
 };
@@ -50,9 +55,15 @@ module.exports = class {
 		 *   }
 		 * }
 		 */
-		this._data = fs.existsSync(this._dbPath) ? JSON.parse(fs.readFileSync(this._dbPath, {
-			encoding: ENCODING
-		})) : {};
+		if (fs.existsSync(this._dbPath)) {
+			this._data = JSON.parse(
+				fs.readFileSync(this._dbPath, {
+					encoding: ENCODING
+				})
+			);
+		} else {
+			this._data = {};
+		}
 	}
 
 	get(file, type) {
@@ -87,7 +98,7 @@ module.exports = class {
 			method: 'rmFile',
 			job: file => {
 				this._data[file] === undefined
-					? console.warn(chalk.red(`>> [rmFile] No such file in collection: ${file}`))
+					? warn(`[rmFile] No such file in collection: ${file}`)
 					: delete this._data[file];
 			}
 		});
@@ -103,8 +114,8 @@ module.exports = class {
 			method: 'check',
 			job: file => {
 				this._data[file] === undefined
-					? console.warn(chalk.red(`>> [check] No such file in collection: ${file}`))
-					: getTS(file) !== this._data[file].ts && ret.push(file);
+					? warn(`[check] No such file in collection: ${file}`)
+					: getFileTS(file) !== this._data[file].ts && ret.push(file);
 			}
 		});
 
@@ -117,10 +128,10 @@ module.exports = class {
 			method: 'update',
 			job: file => {
 				if (this._data[file] === undefined) {
-					console.warn(chalk.red(`>> [update] No such file in collection: ${file}`));
+					warn(`[update] No such file in collection: ${file}`);
 				} else {
-					this._data[file].ts = getTS(file);
-					this._data[file].md5 = getMD5(file);
+					this._data[file].ts = getFileTS(file);
+					this._data[file].md5 = getFileMD5(file);
 				}
 			}
 		});

@@ -2,7 +2,7 @@
   "name": "file-changed",
   "version": "1.2.1",
   "description": "A node module to check and store file changed.",
-  "main": "lib/main.js",
+  "main": "src/main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/poppinlp/file-changed"
@@ -27,23 +27,26 @@
     "md5"
   ],
   "scripts": {
-    "ut": "./node_modules/.bin/ava test/index.js --verbose --color --tap --fail-fast | ./node_modules/.bin/tap-diff",
-    "eslint": "./node_modules/.bin/eslint -c .eslintrc.yml .",
-    "test": "npm run eslint && npm run ut",
-    "cov": "./node_modules/.bin/nyc npm test",
-    "report": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls",
+    "ut": "ava tests/index.js --verbose --color --tap --fail-fast | tap-diff",
+    "format": "prettier -c .prettierrc.yml src/*.js tests/*.js --write",
+    "lint": "eslint -c .eslintrc.yml .",
+    "test": "npm run lint && npm run ut",
+    "cov": "nyc npm test",
+    "report": "nyc report --reporter=text-lcov | coveralls",
     "cov-report": "npm run cov && npm run report"
   },
   "dependencies": {
-    "chalk": "2.1.0",
-    "glob": "7.1.2"
+    "chalk": "^2.4.1",
+    "glob": "^7.1.2"
   },
   "devDependencies": {
-    "ava": "0.22.0",
-    "coveralls": "2.13.1",
-    "eslint": "4.8.0",
-    "eslint-config-handsome": "0.2.8",
-    "nyc": "11.2.1",
-    "tap-diff": "0.1.1"
+    "ava": "^0.25.0",
+    "coveralls": "^3.0.1",
+    "eslint": "^4.8.0",
+    "eslint-config-handsome": "^0.4.1",
+    "eslint-config-prettier": "^2.9.0",
+    "nyc": "^11.2.1",
+    "prettier": "^1.12.1",
+    "tap-diff": "^0.1.1"
   }
 }

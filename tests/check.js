@@ -23,8 +23,16 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 		t.plan(4);
 
 		fc.addFile(TEST_PATH.file1);
-		t.deepEqual(fc.check(TEST_PATH.file1), [TEST_PATH.file1], 'should return file path within array');
-		t.deepEqual(fc.check(TEST_PATH.file1, TEST_PATH.file2), [TEST_PATH.file1], 'should return file path within array');
+		t.deepEqual(
+			fc.check(TEST_PATH.file1),
+			[TEST_PATH.file1],
+			'should return file path within array'
+		);
+		t.deepEqual(
+			fc.check(TEST_PATH.file1, TEST_PATH.file2),
+			[TEST_PATH.file1],
+			'should return file path within array'
+		);
 		t.is(fc.check(TEST_PATH.file2, TEST_PATH.file3).length, 0, 'should return 0');
 
 		fc.rmFile(TEST_PATH.file1);
@@ -36,7 +44,11 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 		t.plan(1);
 
 		fc.addFile(TEST_PATH.glob);
-		t.deepEqual(fc.check(TEST_PATH.glob), [TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3], 'should return 3 files path within array');
+		t.deepEqual(
+			fc.check(TEST_PATH.glob),
+			[TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3],
+			'should return 3 files path within array'
+		);
 	});
 	test('[check] check empty glob', t => {
 		const fc = new Fc();

@@ -16,7 +16,12 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 
 		fc.addFile(TEST_PATH.file1);
 		fc.addFile(TEST_PATH.file2, TEST_PATH.file3);
-		t.deepEqual(fc.list(), [TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3], 'should return those 3 files within array');
+
+		t.deepEqual(
+			fc.list(),
+			[TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3],
+			'should return those 3 files within array'
+		);
 	});
 	test('[addFile] add not exist file', t => {
 		const fc = new Fc();
@@ -33,7 +38,11 @@ module.exports = ({ test, Fc, TEST_PATH }) => {
 		t.plan(1);
 
 		fc.addFile(TEST_PATH.glob);
-		t.deepEqual(fc.list(), [TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3], 'should return those 3 files within array');
+		t.deepEqual(
+			fc.list(),
+			[TEST_PATH.file1, TEST_PATH.file2, TEST_PATH.file3],
+			'should return those 3 files within array'
+		);
 	});
 	test('[addFile] add empty glob', t => {
 		const fc = new Fc();
