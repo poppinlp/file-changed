@@ -1,1 +1,3 @@
-extends: handsome
+extends:
+  - handsome
+  - prettier
