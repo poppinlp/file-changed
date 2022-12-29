@@ -39,7 +39,7 @@
     "glob": "^7.1.3"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^5.1.0",
     "coveralls": "^3.0.2",
     "eslint": "^5.5.0",
     "eslint-config-handsome": "^0.6.1",
